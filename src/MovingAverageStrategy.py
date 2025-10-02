@@ -1,6 +1,6 @@
 # MovingAverageStrategy.py
 import pandas as pd
-from .Strategy import Strategy
+from Strategy import Strategy
 
 class MovingAverageStrategy(Strategy):
     def __init__(self, shares_per_ticker=1):
