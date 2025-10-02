@@ -37,11 +37,8 @@ class PriceLoader:
         
         # Add delay to respect API limits
         time.sleep(batch_delay)
-        adj_close = pd.DataFrame()
-        for ticker in tickers:
-            adj_close[ticker] = data[ticker]['Close']
 
-        return adj_close
+        return data
 
     def download_all_sp500(self, start_date: str, end_date: str, batch_size = 50) -> pd.DataFrame:
         all_tickers = self.get_sp500_tickers()
@@ -67,18 +64,24 @@ class PriceLoader:
         
         return all_data
 
-    def save_to_parquet(self, dataframe: pd.DataFrame, filename: str):
-        filepath = os.path.join(self.data_dir, filename)
-        dataframe.to_parquet(filepath)
+    def save_to_parquet(self, dataframe: pd.DataFrame):
+        save_count = 0
+        for ticker in self.all_tickers:
+            ticker_data = dataframe[ticker]
+            ticker_filename = f"{ticker}.parquet"
+            filepath = os.path.join(self.data_dir, ticker_filename)
+            ticker_data.to_parquet(filepath)
+            if save_count % 100 == 0:
+                print(f"Saved {save_count + 1}/{len(self.all_tickers)}: {ticker_filename}")
+            save_count += 1
 
     def load_from_parquet(self, filename: str):
         filepath = os.path.join(self.data_dir, filename)
         return pd.read_parquet(filepath)
 
-
 def main():
-    loader = PriceLoader(data_dir = "data.tmp")
-    
+    loader = PriceLoader(data_dir = "data")
+
     print("Starting S&P 500 data download...")
     print("=" * 60)
     
@@ -88,7 +91,7 @@ def main():
         batch_size = 50
     )
 
-    loader.save_to_parquet(sp500_data, "sp500_data.parquet")
+    loader.save_to_parquet(sp500_data)
     
     # Show summary
     print("\n" + "=" * 60)
