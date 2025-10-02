@@ -1,6 +1,6 @@
 # BenchmarkStrategy.py
 import pandas as pd
-from Strategy import Strategy, StrategyResult
+from .Strategy import Strategy, StrategyResult
 
 class BenchmarkStrategy(Strategy):
     def __init__(self):

@@ -1,1 +1,1 @@
-# FINM32500HW2
+# FINM32500 - Homework 2

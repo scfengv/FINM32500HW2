@@ -104,6 +104,5 @@ def main():
     print(f"\nData info:")
     print(sp500_data.info())
 
-
 if __name__ == "__main__":
     main()
