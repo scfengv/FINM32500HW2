@@ -18,9 +18,13 @@ class BenchmarkStrategy(Strategy):
         
         spent = 0
         for tick in prices.columns:
-            qty = int((cash / len(prices.columns)) / prices.iloc[0][tick])  # X shares per ticker
+            first_p = prices.iloc[0][tick]
+            if pd.notna(first_p):
+                qty = int((cash / len(prices.columns)) / first_p)  # X shares per ticker
+            else:
+                qty = 0
             positions.iloc[0][tick] = qty
-            spent += qty * prices.iloc[0][tick]
+            spent += qty * (0 if pd.isna(first_p) else first_p)
         cash -= spent
         positions.iloc[1:] = positions.iloc[0]  # Hold forever
 
