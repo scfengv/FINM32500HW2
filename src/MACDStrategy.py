@@ -1,6 +1,6 @@
 # Buy if MACD line crosses above signal line
 import pandas as pd
-from .Strategy import Strategy
+from Strategy import Strategy
 
 class MACDStrategy(Strategy):
     def __init__(self, shares_per_ticker = 1):
