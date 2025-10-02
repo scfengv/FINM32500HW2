@@ -1,3 +1,4 @@
+# PriceLoader.py
 import os
 import time
 import requests
@@ -8,6 +9,7 @@ class PriceLoader:
     def __init__(self, data_dir = "data"):
         self.data_dir = data_dir
         self.all_tickers = list()
+        os.makedirs(self.data_dir, exist_ok=True)
     
     def get_sp500_tickers(self):
         url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
@@ -67,7 +69,7 @@ class PriceLoader:
     def save_to_parquet(self, dataframe: pd.DataFrame):
         save_count = 0
         for ticker in self.all_tickers:
-            ticker_data = dataframe[ticker]
+            ticker_data = dataframe[ticker]['Close'].to_frame()
             ticker_filename = f"{ticker}.parquet"
             filepath = os.path.join(self.data_dir, ticker_filename)
             ticker_data.to_parquet(filepath)
@@ -78,6 +80,18 @@ class PriceLoader:
     def load_from_parquet(self, filename: str):
         filepath = os.path.join(self.data_dir, filename)
         return pd.read_parquet(filepath)
+    
+    def load_all(self):
+        """
+        Helper func for Strategy Comparison notebook to aggregate parquets into single DataFrame of close prices.
+        """
+        prices = {}
+        for filename in os.listdir(self.data_dir):
+            if filename.endswith('.parquet'):
+                ticker = filename.replace('.parquet', '')
+                df = pd.read_parquet(os.path.join(self.data_dir, filename))
+                prices[ticker] = df['Close']
+        return pd.DataFrame(prices)
 
 def main():
     loader = PriceLoader(data_dir = "data")
@@ -103,6 +117,7 @@ def main():
     print(sp500_data.head())
     print(f"\nData info:")
     print(sp500_data.info())
+
 
 if __name__ == "__main__":
     main()
