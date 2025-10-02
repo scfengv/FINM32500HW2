@@ -1,6 +1,6 @@
 # BenchmarkStrategy.py
 import pandas as pd
-from .Strategy import Strategy, StrategyResult
+from Strategy import Strategy, StrategyResult
 
 class BenchmarkStrategy(Strategy):
     def __init__(self):
@@ -23,7 +23,7 @@ class BenchmarkStrategy(Strategy):
                 qty = int((cash / len(prices.columns)) / first_p)  # X shares per ticker
             else:
                 qty = 0
-            positions.iloc[0][tick] = qty
+            positions.loc[positions.index[0], tick] = qty
             spent += qty * (0 if pd.isna(first_p) else first_p)
         cash -= spent
         positions.iloc[1:] = positions.iloc[0]  # Hold forever
