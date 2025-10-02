@@ -1,6 +1,6 @@
 # Buy if RSI < 30 (oversold)
 import pandas as pd
-from .Strategy import Strategy
+from Strategy import Strategy
 
 class RSIStrategy(Strategy):
     def __init__(self, shares_per_ticker=1):
