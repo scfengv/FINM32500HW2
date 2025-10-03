@@ -87,7 +87,7 @@ class PriceLoader:
         """
         prices = {}
         for filename in os.listdir(self.data_dir):
-            if filename.endswith('.parquet'):
+            if (filename.endswith('.parquet')) and (filename != 'sp500_data.parquet'):
                 ticker = filename.replace('.parquet', '')
                 df = pd.read_parquet(os.path.join(self.data_dir, filename))
                 prices[ticker] = df['Close']

@@ -1,6 +1,6 @@
 # Buy if MACD line crosses above signal line
 import pandas as pd
-from Strategy import Strategy
+from BaseStrategy import Strategy
 
 class MACDStrategy(Strategy):
     def __init__(self, shares_per_ticker = 1):
@@ -13,4 +13,5 @@ class MACDStrategy(Strategy):
         macd = exp1 - exp2
         signal = macd.ewm(span=9, adjust=False).mean()
         sig[macd > signal] = 1  # buy when MACD > signal line
+        sig[macd < signal] = -1 # sell when MACD < signal line
         return sig

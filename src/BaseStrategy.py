@@ -24,7 +24,7 @@ class Strategy:
     def generate_signals(self, prices: pd.DataFrame):
         raise NotImplementedError("Must implement generate_signals")
 
-    def run(self, prices: pd.DataFrame):
+    def run(self, prices: pd.DataFrame, transaction_cost: float = 0.0035) -> StrategyResult:
         positions = pd.DataFrame(0, index=prices.index, columns=prices.columns)
         cash = 1000000.0  # Initial cash is 1 mil for all strats
         signals = self.generate_signals(prices)
@@ -40,12 +40,12 @@ class Strategy:
             for tick in prices.columns:
                 if curr_signals[tick] == -1 and curr_pos[tick] > 0:  # No shorting
                     sell = min(self.qty, curr_pos[tick])  # Again, can't sell more than we have
-                    cash += sell * curr_prices[tick]
+                    cash += (sell * curr_prices[tick]) * (1 - transaction_cost)
                     curr_pos[tick] -= sell
 
                 elif curr_signals[tick] == 1:
                     buy = min(self.qty, cash // curr_prices[tick]) # No leverage
-                    cash -= buy * curr_prices[tick]
+                    cash -= (buy * curr_prices[tick]) * (1 + transaction_cost)
                     curr_pos[tick] += buy
                 
             positions.iloc[i] = curr_pos

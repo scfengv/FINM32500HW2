@@ -1,6 +1,7 @@
 # Buy if RSI < 30 (oversold)
+# Sell if RSI > 70 (overbought)
 import pandas as pd
-from Strategy import Strategy
+from BaseStrategy import Strategy
 
 class RSIStrategy(Strategy):
     def __init__(self, shares_per_ticker=1):
@@ -17,5 +18,7 @@ class RSIStrategy(Strategy):
     def generate_signals(self, prices: pd.DataFrame):
         sig = self.empty_signals(prices)
         rsi = self.compute_rsi(prices)
-        sig[rsi < 30] = 1  # buy when RSI < 30 (oversold)
+        sig[(rsi < 30) & (rsi.shift(1) >= 30)] = 1    # Buy when crossing below 30
+        sig[(rsi > 80) & (rsi.shift(1) <= 80)] = -1  # Sell when crossing above 80
+
         return sig
