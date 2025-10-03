@@ -24,12 +24,12 @@ A comprehensive backtesting framework for comparing technical trading strategies
   - Buy Signal: Short-term MA crossing above long-term MA
   - Sell Signal: Short-term MA crossing below long-term MA
 - Behavior: This trend-following strategy aims to capture sustained price movements. It tends to lag turning points but excels in trending markets.
-1. **MACD Strategy**:
+3. **MACD Strategy**:
 - Logic: A momentum-based strategy that uses the MACD indicator to identify potential reversals.
   - Buy Signal: MACD line crossing above the signal line
   - Sell Signal: MACD line crossing below the signal line
 - Behavior: This strategy is more responsive to price changes than the moving average strategy, making it suitable for capturing shorter-term trends and reversals.
-1. **RSI Strategy**:
+4. **RSI Strategy**:
 - Logic: A mean-reversion strategy that uses the RSI indicator to identify overbought/oversold conditions.
   - Buy Signal: RSI crossing below 30 (oversold)
   - Sell Signal: RSI crossing above 80 (overbought)
