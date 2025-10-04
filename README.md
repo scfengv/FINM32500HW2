@@ -1,4 +1,5 @@
 # FINM32500 - Homework 2
+Group members: Shen-Ching Feng, Nicolas Kebo, Beckham Wee, Kevin Yuan
 
 ## Overview
 A comprehensive backtesting framework for comparing technical trading strategies on S&P 500 stocks. This project implements four distinct trading strategies and evaluates their performance against a buy-and-hold benchmark. All strategies operate under realistic trading constraints including no shorting, no leverage, and transaction costs.
